@@ -2,8 +2,7 @@
 
 import random
 
-# for var in range(0, 100):
-
+# デバッグ用標準出力
 def debug_print(obj_message):
     # print obj_message
     pass
@@ -50,6 +49,7 @@ class Agent:
         # 以下，Q値の再計算
         old_q = self.states[ one_before_state_num ][action]
 
+        # 選択肢の中で最も高いQ値を取得
         max_q = None
         next_right_q = self.states[ self.current_state_num ]['right']
         next_left_q = self.states[ self.current_state_num ]['left']
@@ -58,15 +58,16 @@ class Agent:
         else:
             max_q = next_left_q
 
-        reward = self.get_reward()
+        reward = self.get_reward() # 報酬
 
+        # Qの値を再計算
         new_q = old_q + alpha * (
             reward + gamma * max_q - old_q
             )
 
         self.states[ one_before_state_num ][ action ] = new_q
-
-        if reward is 1:
+        
+        if reward is 1: # ゴールに到着している場合は最初の位置に戻す
             self.current_state_num = 0
          
 
@@ -124,7 +125,8 @@ class Agent:
             return 0
 
         
-            
+
+    # Q値を出力
     def print_q_val(self):
 
         for state in self.states:
@@ -133,7 +135,8 @@ class Agent:
             print
 
 
-            
+
+    # エージェントが環境中のどの位置に居るか視覚的に出力
     def print_localtion(self):
 
         location_string = ''
@@ -146,12 +149,15 @@ class Agent:
 
 
 
-agent = Agent()
-while True:
-    agent.act()
-    # agent.print_q_val()
-    agent.print_localtion()
-    raw_input() # 処理を止めてコマンドラインを確認する
 
+agent = Agent()
+agent.print_q_val()
+# while True:
+for val in range(0, 1000):
+    agent.act()
+    agent.print_localtion()
+    # raw_input() # 処理を止めてコマンドラインを確認する
+
+agent.print_q_val()
 
     
